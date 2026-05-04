@@ -1,11 +1,9 @@
-"use client";
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import { store } from "../lib/store";
-import { Provider } from "react-redux";
+import Providers from "../components/Providers";
+import Navbar from "../components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +30,9 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="">
-        <Provider store={store}>{children}</Provider>
+      <body className="bg-gray-50" suppressHydrationWarning>
+        <Navbar />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
