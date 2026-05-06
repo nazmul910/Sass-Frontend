@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { loginUser } from "@/features/auth/authApi";
+import { registerUser } from "@/features/auth/authApi";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { loading, error } = useAppSelector((s) => s.auth);
@@ -16,22 +16,20 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await dispatch(loginUser({ email, password }));
-    if (loginUser.fulfilled.match(result)) {
-      router.push("/dashboard");
+    const result = await dispatch(registerUser({ email, password }));
+    if (registerUser.fulfilled.match(result)) {
+      router.push("/login");
     }
   };
 
   return (
     <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        {/* Logo / Title */}
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-white tracking-tight">SaaSify</h1>
-          <p className="text-zinc-400 mt-2 text-sm">Sign in to your account</p>
+          <p className="text-zinc-400 mt-2 text-sm">Create your account</p>
         </div>
 
-        {/* Card */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-2xl">
           {error && (
             <div className="mb-5 px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
@@ -69,14 +67,14 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg text-sm transition"
             >
-              {loading ? "Signing in…" : "Sign In"}
+              {loading ? "Creating account…" : "Create Account"}
             </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-zinc-500">
-            Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-indigo-400 hover:text-indigo-300 transition">
-              Register
+            Already have an account?{" "}
+            <Link href="/login" className="text-indigo-400 hover:text-indigo-300 transition">
+              Sign in
             </Link>
           </p>
         </div>

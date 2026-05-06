@@ -1,131 +1,231 @@
 "use client";
 
-import api from "../../lib/axiosClient";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { fetchMe } from "@/features/users/usersApi";
+import { fetchTenantUsers } from "@/features/users/usersApi";
+import { fetchFeature1, fetchFeature2, fetchFeature3 } from "@/features/features/featuresApi";
+import { logout } from "@/features/auth/authSlice";
 
-interface FeatureResult {
-  success: boolean;
-  message: string;
-  feature: string;
+
+const planColor: Record<string, string> = {
+  FREE: "bg-zinc-700 text-zinc-300",
+  BASIC: "bg-blue-600/20 text-blue-400 border border-blue-600/40",
+  STANDARD: "bg-violet-600/20 text-violet-400 border border-violet-600/40",
+  PREMIUM: "bg-amber-500/20 text-amber-400 border border-amber-500/40",
+};
+
+
+const PLAN_HIERARCHY = ["FREE", "BASIC", "STANDARD", "PREMIUM"];
+
+function canAccess(userPlan: string, requiredPlan: string) {
+  return PLAN_HIERARCHY.indexOf(userPlan) >= PLAN_HIERARCHY.indexOf(requiredPlan);
 }
 
-export default function Dashboard() {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<FeatureResult | null>(null);
+export default function DashboardPage() {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const getFeature = async (url: string, featureName: string) => {
-    setLoading(true);
-    setResult(null);
-    try {
-      const res = await api.get(url);
-      setResult({ success: true, message: res.data.message, feature: featureName });
-    } catch (err: any) {
-      setResult({ success: false, message: "Access Denied", feature: featureName });
-    } finally {
-      setLoading(false);
+  const { token } = useAppSelector((s) => s.auth);
+  const { me, tenantUsers, loading: usersLoading } = useAppSelector((s) => s.users);
+  const { feature1, feature2, feature3, loading: featLoading, error: featError } = useAppSelector((s) => s.features);
+
+ 
+  useEffect(() => {
+    if (!token && typeof window !== "undefined" && !localStorage.getItem("token")) {
+      router.push("/login");
     }
+  }, [token, router]);
+
+  useEffect(() => {
+    dispatch(fetchMe());
+    dispatch(fetchTenantUsers());
+  }, [dispatch]);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/login");
   };
 
+  const userPlan: string = me?.plan ?? "FREE";
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container-custom">
-        {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
-          <p className="text-gray-600">Access your features and manage your account</p>
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {[
-            { name: "Feature 1", url: "/features/feature1", icon: "⚙️", color: "from-blue-500 to-blue-600" },
-            { name: "Feature 2", url: "/features/feature2", icon: "📊", color: "from-indigo-500 to-indigo-600" },
-            { name: "Feature 3", url: "/features/feature3", icon: "🎯", color: "from-purple-500 to-purple-600" },
-          ].map((feature, idx) => (
-            <button
-              key={idx}
-              onClick={() => getFeature(feature.url, feature.name)}
-              disabled={loading}
-              className={`group card flex flex-col items-center justify-center py-8 cursor-pointer hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed`}
-            >
-              <div className={`bg-gradient-to-br ${feature.color} rounded-full p-4 mb-4 text-white`}>
-                <span className="text-4xl">{feature.icon}</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{feature.name}</h3>
-              <p className="text-sm text-gray-600 text-center mb-4">
-                Click to access this feature
-              </p>
-              <div className="btn-primary text-sm">
-                Access Feature
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {/* Result Display */}
-        {result && (
-          <div
-            className={`rounded-xl p-6 mb-8 ${
-              result.success
-                ? "bg-green-50 border border-green-200"
-                : "bg-red-50 border border-red-200"
-            }`}
+    <div className="min-h-screen bg-zinc-950 text-white">
+      {/* Navbar */}
+      <nav className="border-b border-zinc-800 px-6 py-4 flex items-center justify-between">
+        <span className="text-xl font-bold tracking-tight">SaaSify</span>
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-zinc-400">{me?.email}</span>
+          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${planColor[userPlan] ?? planColor.FREE}`}>
+            {userPlan}
+          </span>
+          <Link
+            href="/pricing"
+            className="text-sm px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg transition"
           >
-            <div className="flex items-start">
-              <div className="flex-shrink-0">
-                {result.success ? (
-                  <svg
-                    className="h-6 w-6 text-green-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="h-6 w-6 text-red-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                )}
-              </div>
-              <div className="ml-4">
-                <h3 className={`font-bold ${result.success ? "text-green-900" : "text-red-900"}`}>
-                  {result.feature}
-                </h3>
-                <p className={result.success ? "text-green-700 mt-1" : "text-red-700 mt-1"}>
-                  {result.message}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { label: "Active Features", value: "3", change: "+12%" },
-            { label: "Usage This Month", value: "2.4 GB", change: "+8%" },
-            { label: "Account Status", value: "Active", change: "✓" },
-          ].map((stat, idx) => (
-            <div key={idx} className="card">
-              <p className="text-gray-600 text-sm font-medium mb-2">{stat.label}</p>
-              <p className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</p>
-              <p className="text-green-600 text-sm font-medium">{stat.change}</p>
-            </div>
-          ))}
+            Upgrade
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="text-sm text-zinc-400 hover:text-white transition"
+          >
+            Logout
+          </button>
         </div>
+      </nav>
+
+      <div className="max-w-5xl mx-auto px-6 py-10 space-y-10">
+
+        {/* Plan Info */}
+        <section>
+          <h2 className="text-lg font-semibold mb-4 text-zinc-200">Your Plan</h2>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 flex items-center justify-between">
+            <div>
+              <p className="text-3xl font-bold">{userPlan}</p>
+              {me?.planExpiry && (
+                <p className="text-sm text-zinc-400 mt-1">
+                  Expires: {new Date(me.planExpiry).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+            <Link
+              href="/pricing"
+              className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold rounded-lg transition"
+            >
+              Upgrade Plan →
+            </Link>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section>
+          <h2 className="text-lg font-semibold mb-4 text-zinc-200">Features</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Feature 1 — BASIC */}
+            <FeatureCard
+              title="Feature 1"
+              required="BASIC"
+              userPlan={userPlan}
+              result={feature1}
+              loading={featLoading}
+              error={featError}
+              onTry={() => dispatch(fetchFeature1())}
+            />
+            {/* Feature 2 — STANDARD */}
+            <FeatureCard
+              title="Feature 2"
+              required="STANDARD"
+              userPlan={userPlan}
+              result={feature2}
+              loading={featLoading}
+              error={featError}
+              onTry={() => dispatch(fetchFeature2())}
+            />
+            {/* Feature 3 — PREMIUM */}
+            <FeatureCard
+              title="Feature 3"
+              required="PREMIUM"
+              userPlan={userPlan}
+              result={feature3}
+              loading={featLoading}
+              error={featError}
+              onTry={() => dispatch(fetchFeature3())}
+            />
+          </div>
+        </section>
+
+        {/* Tenant Users */}
+        <section>
+          <h2 className="text-lg font-semibold mb-4 text-zinc-200">
+            Team Members ({tenantUsers.length})
+          </h2>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+            {usersLoading ? (
+              <p className="p-6 text-zinc-500 text-sm">Loading…</p>
+            ) : (
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-zinc-800 text-zinc-400 text-left">
+                    <th className="px-6 py-3 font-medium">Email</th>
+                    <th className="px-6 py-3 font-medium">Plan</th>
+                    <th className="px-6 py-3 font-medium">Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tenantUsers.map((u: any) => (
+                    <tr key={u.id} className="border-b border-zinc-800/60 hover:bg-zinc-800/40 transition">
+                      <td className="px-6 py-3 text-zinc-200">{u.email}</td>
+                      <td className="px-6 py-3">
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${planColor[u.plan] ?? planColor.FREE}`}>
+                          {u.plan}
+                        </span>
+                      </td>
+                      <td className="px-6 py-3 text-zinc-400">{u.role}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </section>
+
       </div>
+    </div>
+  );
+}
+
+function FeatureCard({
+  title,
+  required,
+  userPlan,
+  result,
+  loading,
+  error,
+  onTry,
+}: {
+  title: string;
+  required: string;
+  userPlan: string;
+  result: string | null;
+  loading: boolean;
+  error: string | null;
+  onTry: () => void;
+}) {
+  const accessible = canAccess(userPlan, required);
+
+  return (
+    <div className={`bg-zinc-900 border rounded-xl p-5 flex flex-col gap-3 ${accessible ? "border-zinc-700" : "border-zinc-800 opacity-60"}`}>
+      <div className="flex items-center justify-between">
+        <p className="font-semibold text-zinc-200">{title}</p>
+        <span className="text-xs text-zinc-500">{required}+</span>
+      </div>
+
+      {result && (
+        <p className="text-green-400 text-sm">✓ {result}</p>
+      )}
+
+      {!accessible ? (
+        <Link
+          href="/pricing"
+          className="text-xs text-center py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition"
+        >
+          Upgrade to {required}
+        </Link>
+      ) : (
+        <button
+          onClick={onTry}
+          disabled={loading}
+          className="text-xs py-2 rounded-lg bg-indigo-600/80 hover:bg-indigo-600 text-white transition disabled:opacity-50"
+        >
+          {loading ? "Loading…" : "Try Feature"}
+        </button>
+      )}
+
+      {error && accessible && (
+        <p className="text-red-400 text-xs">{error}</p>
+      )}
     </div>
   );
 }
