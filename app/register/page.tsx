@@ -16,7 +16,9 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const result = await dispatch(registerUser({ email, password }));
+
     if (registerUser.fulfilled.match(result)) {
       router.push("/login");
     }
@@ -25,59 +27,38 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-white tracking-tight">SaaSify</h1>
-          <p className="text-zinc-400 mt-2 text-sm">Create your account</p>
-        </div>
+        <h1 className="text-white text-3xl mb-6 text-center">Register</h1>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-2xl">
-          {error && (
-            <div className="mb-5 px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
-              {error}
-            </div>
-          )}
+        {error && <p className="text-red-400 mb-4">{error}</p>}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm text-zinc-400 mb-1.5">Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="you@example.com"
-                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg text-sm placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition"
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full p-3 bg-zinc-800 text-white"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-            <div>
-              <label className="block text-sm text-zinc-400 mb-1.5">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="••••••••"
-                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 text-white rounded-lg text-sm placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition"
-              />
-            </div>
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 bg-zinc-800 text-white"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg text-sm transition"
-            >
-              {loading ? "Creating account…" : "Create Account"}
-            </button>
-          </form>
+          <button
+            disabled={loading}
+            className="w-full bg-indigo-600 p-3 text-white"
+          >
+            {loading ? "Loading..." : "Register"}
+          </button>
+        </form>
 
-          <p className="mt-6 text-center text-sm text-zinc-500">
-            Already have an account?{" "}
-            <Link href="/login" className="text-indigo-400 hover:text-indigo-300 transition">
-              Sign in
-            </Link>
-          </p>
-        </div>
+        <Link href="/login" className="text-indigo-400 block mt-4 text-center">
+          Go to login
+        </Link>
       </div>
     </div>
   );
