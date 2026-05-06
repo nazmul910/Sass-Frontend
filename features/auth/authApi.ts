@@ -22,6 +22,9 @@ export const registerUser = createAsyncThunk<
   { rejectValue: string }
 >("auth/register", async (payload, { rejectWithValue }) => {
   try {
+    console.log("Registering user with payload:", payload);
+    console.log("API base URL:", api.defaults.baseURL);
+    console.log("API instance:", api);
     const res = await api.post<AuthResponse>("/auth/register", payload);
     return res.data;
   } catch (err: unknown) {
