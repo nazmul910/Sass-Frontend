@@ -37,10 +37,12 @@ export default function PricingPage() {
   const { me } = useAppSelector((s) => s.users);
   const { gatewayURL, payload, loading, error } = useAppSelector((s) => s.payment);
 
-  // Once we get the gateway URL + payload, auto-submit to SSLCommerz
+  console.log("Payment state:", { gatewayURL, payload, loading, error });
+
   useEffect(() => {
     if (gatewayURL && payload) {
-      // Build a form and submit it to SSLCommerz sandbox
+
+
       const form = document.createElement("form");
       form.method = "POST";
       form.action = gatewayURL;
