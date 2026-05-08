@@ -4,13 +4,13 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100">
       {/* Hero Section */}
       <section className="container-custom py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Welcome to <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">SaaS Platform</span>
+              Welcome to <span className="bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">SaaS Platform</span>
             </h1>
             <p className="text-lg text-gray-600 mb-8 leading-relaxed">
               Transform your business with our powerful SaaS solution. Get started today and experience the difference.
@@ -26,7 +26,9 @@ export default function Home() {
           </div>
           
           <div className="bg-white rounded-2xl shadow-2xl p-8">
-            <div className="w-full h-64 bg-gradient-to-br from-blue-300 to-indigo-500 rounded-xl animate-pulse"></div>
+            <div className="w-full flex justify-center items-center  h-64 bg-linear-to-br from-blue-300 to-indigo-500 rounded-xl">
+              <h1 className="text-white">Sass</h1>
+            </div>
           </div>
         </div>
       </section>
