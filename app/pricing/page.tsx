@@ -19,7 +19,7 @@ const PLANS = [
     days: "30 days",
     color: "border-violet-600/40",
     badge: "bg-violet-600/20 text-violet-400",
-    features: ["Feature 1 + 2 access", "Team members", "Priority support"],
+    features: ["Feature 3 + 5 access", "Team members", "Priority support"],
     popular: true,
   },
   {
@@ -28,7 +28,7 @@ const PLANS = [
     days: "90 days",
     color: "border-amber-500/40",
     badge: "bg-amber-500/20 text-amber-400",
-    features: ["All features", "Unlimited team", "Dedicated support"],
+    features: ["All features", "Unlimited team", "Dedicated support", "Priority support"],
   },
 ];
 
