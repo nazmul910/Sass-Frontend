@@ -10,7 +10,14 @@ export const createPayment = createAsyncThunk(
   ) => {
     try {
       const res = await api.post("/payment", payload);
-      return res.data; 
+      const {gatewayURL} = res.data
+
+      if(gatewayURL){
+        window.location.href = gatewayURL;
+      }
+
+      return res.data;
+
     } catch (err: any) {
       return rejectWithValue(
         err.response?.data?.message || "Payment initiation failed"
