@@ -117,7 +117,7 @@ export default function PricingPage() {
                 disabled={loading || !me}
                 className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl text-sm transition"
               >
-                {loading ? "Redirecting…" : `Get ${plan.name}`}
+                {loading ? "Loading…" : `Get ${plan.name}`}
               </button>
             </div>
           ))}
