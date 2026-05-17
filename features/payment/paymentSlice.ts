@@ -25,7 +25,7 @@ const paymentSlice = createSlice({
       state.error = null;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: (builder) => {   
     builder
       .addCase(createPayment.pending, (state) => {
         state.loading = true;

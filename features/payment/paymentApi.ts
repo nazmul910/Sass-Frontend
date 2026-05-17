@@ -16,7 +16,7 @@ export const createPayment = createAsyncThunk(
         window.location.href = gatewayURL;
       }
 
-      return res.data;
+      return res.data; 
 
     } catch (err: any) {
       return rejectWithValue(
