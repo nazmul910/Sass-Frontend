@@ -64,7 +64,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-600 py-16">
+      <section className="bg-linear-to-r from-blue-600 to-indigo-600 py-16">
         <div className="container-custom text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to get started?</h2>
           <p className="text-blue-100 mb-8">Join thousands of satisfied customers today</p>
