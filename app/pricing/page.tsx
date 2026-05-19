@@ -96,8 +96,12 @@ export default function PricingPage() {
   };
 
   const handleStripeBuy = (amount: number) => {
+
     if (!me?.id) return;
-    dispatch(createStripePayment({ userId: me.id, amount }));
+
+    console.log("Stripe Buy Clicked with amount:", amount);
+        console.log("Stripe Buy Clicked with amount:", me.id);
+    // dispatch(createStripePayment({ userId: me.id, amount }));
   };
 
   return (
