@@ -100,8 +100,8 @@ export default function PricingPage() {
     if (!me?.id) return;
 
     console.log("Stripe Buy Clicked with amount:", amount);
-        console.log("Stripe Buy Clicked with amount:", me.id);
-    // dispatch(createStripePayment({ userId: me.id, amount }));
+    console.log("Stripe Buy Clicked with amount:", me.id);
+    dispatch(createStripePayment({ userId: me.id, amount }));
   };
 
   return (
