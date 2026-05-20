@@ -1,34 +1,68 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect } from "react";
-import { useAppDispatch } from "@/lib/hooks";
-import { fetchMe } from "@/features/users/usersApi";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { verifyStripePayment } from "@/features/stripe-payment/stripePaymentApi";
 
 export default function PaymentSuccessPage() {
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { verifying, verified, error } = useAppSelector((s) => s.stripePayment);
 
   useEffect(() => {
-    dispatch(fetchMe());
-  }, [dispatch]);
+    const sessionId = searchParams.get("session_id");
+    if (sessionId) {
+      dispatch(verifyStripePayment(sessionId));
+    }
+  }, []);
+
+  // ✅ verified হলে 3 সেকেন্ড পর dashboard এ যাবে
+  useEffect(() => {
+    if (verified) {
+      const timer = setTimeout(() => router.push("/dashboard"), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [verified]);
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center text-white px-4">
-      <div className="text-center space-y-6 max-w-sm">
-        <div className="w-20 h-20 mx-auto rounded-full bg-green-500/20 border border-green-500/40 flex items-center justify-center">
-          <span className="text-4xl">✓</span>
-        </div>
-        <h1 className="text-3xl font-bold">Payment Successful!</h1>
-        <p className="text-zinc-400 text-sm">
-          Your plan has been upgraded. Enjoy your new features!
-        </p>
-        <Link
-          href="/dashboard"
-          className="inline-block px-6 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-xl font-semibold text-sm transition"
-        >
-          Go to Dashboard
-        </Link>
+    <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
+      <div className="text-center space-y-4">
+
+        {verifying && (
+          <>
+            <div className="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto" />
+            <p className="text-zinc-400">Payment verify..</p>
+          </>
+        )}
+
+        {verified && (
+          <>
+            <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
+              <span className="text-green-400 text-3xl">✓</span>
+            </div>
+            <h1 className="text-2xl font-bold">Payment Successful!</h1>
+            <p className="text-zinc-400">Your plan activate done. Redirecting to Dashboard...</p>
+          </>
+        )}
+
+        {error && (
+          <>
+            <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto">
+              <span className="text-red-400 text-3xl">✗</span>
+            </div>
+            <h1 className="text-2xl font-bold">Something went wrong</h1>
+            <p className="text-zinc-400">{error}</p>
+            <button
+              onClick={() => router.push("/pricing")}
+              className="px-6 py-2 bg-violet-600 rounded-xl text-sm"
+            >
+              Try Again
+            </button>
+          </>
+        )}
+
       </div>
     </div>
   );

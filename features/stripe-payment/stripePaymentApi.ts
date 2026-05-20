@@ -20,3 +20,18 @@ export const createStripePayment = createAsyncThunk(
     }
   },
 );
+
+// ✅ নতুন thunk
+export const verifyStripePayment = createAsyncThunk(
+  "payment/stripe/verify",
+  async (sessionId: string, { rejectWithValue }) => {
+    try {
+      const res = await api.get(`/payment-strip/verify-session?session_id=${sessionId}`);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(
+        err.response?.data?.message || "Payment verification failed",
+      );
+    }
+  },
+);
