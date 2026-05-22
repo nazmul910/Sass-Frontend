@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { AiFillThunderbolt } from "react-icons/ai";
+import { FaLock } from "react-icons/fa";
+
 
 export default function Home() {
   return (
@@ -39,7 +42,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
-              icon: "⚡",
+              icon: <AiFillThunderbolt />,
               title: "Fast & Reliable",
               description: "Lightning-fast performance with 99.9% uptime guarantee"
             },
