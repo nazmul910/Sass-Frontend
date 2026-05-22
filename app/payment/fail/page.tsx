@@ -9,7 +9,7 @@ export default function PaymentFailPage() {
         <div className="w-20 h-20 mx-auto rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center">
           <span className="text-4xl">✕</span>
         </div>
-        <h1 className="text-3xl font-bold">Payment Failed</h1>
+        <h1 className="text-3xl font-bold text-blue-500">Payment Failed</h1>
         <p className="text-zinc-400 text-sm">
           Something went wrong with your payment. Please try again.
         </p>

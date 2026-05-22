@@ -9,7 +9,7 @@ export default function PaymentCancelPage() {
         <div className="w-20 h-20 mx-auto rounded-full bg-zinc-700/40 border border-zinc-600/40 flex items-center justify-center">
           <span className="text-4xl">–</span>
         </div>
-        <h1 className="text-3xl font-bold">Payment Cancelled</h1>
+        <h1 className="text-3xl font-bold text-blue-500">Payment Cancelled</h1>
         <p className="text-zinc-400 text-sm">
           You cancelled the payment. No charges were made.
         </p>

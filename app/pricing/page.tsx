@@ -110,7 +110,7 @@ export default function PricingPage() {
 
         {/* ── SSLCommerz Section ── */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold tracking-tight">Choose a Plan</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-blue-500">Choose a Plan</h1>
           <p className="text-zinc-400 mt-3 text-base">
             Upgrade to unlock more features for your team
           </p>
@@ -187,7 +187,7 @@ export default function PricingPage() {
 
         {/* ── Stripe Section ── */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold tracking-tight">International Payment</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-blue-500">International Payment</h2>
           <p className="text-zinc-400 mt-3 text-base">
             Pay securely with your international card via Stripe
           </p>

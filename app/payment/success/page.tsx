@@ -46,7 +46,7 @@ function PaymentSuccessContent() {
               <span className="text-green-400 text-3xl">✓</span>
             </div>
 
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-2xl font-bold text-blue-500">
               Payment Successful!
             </h1>
 
@@ -62,7 +62,7 @@ function PaymentSuccessContent() {
               <span className="text-red-400 text-3xl">✗</span>
             </div>
 
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-2xl font-bold text-blue-500">
               Something went wrong
             </h1>
 
