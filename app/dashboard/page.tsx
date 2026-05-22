@@ -16,7 +16,7 @@ const planColor: Record<string, string> = {
   STANDARD: "bg-violet-600/20 text-violet-400 border border-violet-600/40",
   PREMIUM: "bg-amber-500/20 text-amber-400 border border-amber-500/40",
 };
-
+ 
 
 const PLAN_HIERARCHY = ["FREE", "BASIC", "STANDARD", "PREMIUM"];
 
@@ -44,10 +44,10 @@ export default function DashboardPage() {
     dispatch(fetchTenantUsers());
   }, [dispatch]);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    router.push("/login");
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  //   router.push("/login");
+  // };
 
   const userPlan: string = me?.plan ?? "FREE";
 
@@ -67,12 +67,12 @@ export default function DashboardPage() {
           >
             Upgrade
           </Link>
-          <button
+          {/* <button
             onClick={handleLogout}
             className="text-sm text-zinc-400 hover:text-white transition"
           >
             Logout
-          </button>
+          </button> */}
         </div>
       </nav>
 

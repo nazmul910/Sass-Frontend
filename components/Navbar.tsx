@@ -1,18 +1,33 @@
 "use client";
 
+import { logout } from "@/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
+    const dispatch = useAppDispatch();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    router.push("/login");
-  };
+  const { token } = useAppSelector((s) => s.auth);
+
+  // const handleLogout = () => {
+  //   localStorage.removeItem("token");
+  //   localStorage.removeItem("userId");
+  //   router.push("/login");
+  // };
+    const handleLogout = () => {
+      dispatch(logout());
+      router.push("/login");
+    };
+
+      useEffect(() => {
+        if (!token && typeof window !== "undefined" && !localStorage.getItem("token")) {
+          router.push("/login");
+        }
+      }, [token, router]);
 
   return (
     <nav className="bg-white shadow-md">
@@ -38,27 +53,22 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Auth Buttons */}
+          {/* Auth Buttons - Desktop */}
           <div className="hidden md:flex items-center gap-4">
-            <button
-              onClick={handleLogout}
-              className="btn-secondary text-sm"
-            >
-              Logout
-            </button>
+            {!token ? (
+              <Link href="/login" className="btn-secondary text-sm">
+                Login
+              </Link>
+            ) : (
+              <button onClick={handleLogout} className="btn-secondary text-sm">
+                Logout
+              </button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -81,12 +91,20 @@ export default function Navbar() {
             <Link href="/dashboard" className="block px-4 py-2 text-gray-600 hover:text-blue-600">
               Dashboard
             </Link>
-            <button
-              onClick={handleLogout}
-              className="w-full mt-2 btn-secondary text-sm"
-            >
-              Logout
-            </button>
+
+            {/* Auth Buttons - Mobile */}
+            {!token ? (
+              <Link
+                href="/login"
+                className="block w-full mt-2 text-center btn-secondary text-sm"
+              >
+                Login
+              </Link>
+            ) : (
+              <button onClick={handleLogout} className="w-full mt-2 btn-secondary text-sm">
+                Logout
+              </button>
+            )}
           </div>
         )}
       </div>
