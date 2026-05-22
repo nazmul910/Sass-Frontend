@@ -1,9 +1,9 @@
 "use client";
 
 import axios from "axios";
- //  http://localhost:5002/api
+ //  http://localhost:5002/api https://simple-sass-product.onrender.com/api 
 const api = axios.create({
-  baseURL: "https://simple-sass-product.onrender.com/api",
+  baseURL: "http://localhost:5002/api",
 });
 
 
