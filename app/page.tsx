@@ -43,23 +43,23 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
-              icon: <AiFillThunderbolt />,
+              icon: <AiFillThunderbolt  className="text-blue-500"/>,
               title: "Fast & Reliable",
               description: "Lightning-fast performance with 99.9% uptime guarantee"
             },
             {
-              icon: <FaLock />,
+              icon: <FaLock  className="text-blue-500" /> ,
               title: "Secure",
               description: "Enterprise-grade security to protect your data"
             },
             {
-              icon: <BsFillFileBarGraphFill />,
+              icon: <BsFillFileBarGraphFill className="text-blue-500"/>,
               title: "Analytics",
               description: "Real-time insights and comprehensive analytics"
             },
           ].map((feature, idx) => (
             <div key={idx} className="card text-center">
-              <div className="text-4xl mb-4">{feature.icon}</div>
+              <div className="text-4xl mb-4 flex items-center justify-center">{feature.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
               <p className="text-gray-600">{feature.description}</p>
             </div>
