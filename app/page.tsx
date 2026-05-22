@@ -47,7 +47,7 @@ export default function Home() {
               description: "Lightning-fast performance with 99.9% uptime guarantee"
             },
             {
-              icon: "🔒",
+              icon: <FaLock />,
               title: "Secure",
               description: "Enterprise-grade security to protect your data"
             },
