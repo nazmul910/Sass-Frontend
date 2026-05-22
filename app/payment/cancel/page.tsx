@@ -21,10 +21,10 @@ export default function PaymentCancelPage() {
             View Plans
           </Link>
           <Link
-            href="/dashboard"
+            href="/dashboard" 
             className="inline-block px-6 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-xl font-semibold text-sm transition"
           >
-            Dashboard
+            Dashboard 
           </Link>
         </div>
       </div>
