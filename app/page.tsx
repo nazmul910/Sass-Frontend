@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { FaLock } from "react-icons/fa";
+import { BsFillFileBarGraphFill } from "react-icons/bs";
 
 
 export default function Home() {
@@ -52,7 +53,7 @@ export default function Home() {
               description: "Enterprise-grade security to protect your data"
             },
             {
-              icon: "📊",
+              icon: <BsFillFileBarGraphFill />,
               title: "Analytics",
               description: "Real-time insights and comprehensive analytics"
             },
