@@ -24,7 +24,7 @@ export default function PaymentCancelPage() {
             href="/dashboard" 
             className="inline-block px-6 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-xl font-semibold text-sm transition"
           >
-            Dashboard 
+           Go To Dashboard 
           </Link>
         </div>
       </div>
