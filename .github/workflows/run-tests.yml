@@ -1,7 +1,7 @@
 name: Run Tests
 
 on:
-  push:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -9,3 +9,6 @@ on:
         run: |
           npm install
           npm test
+
+  deploy:
+    needs: build
