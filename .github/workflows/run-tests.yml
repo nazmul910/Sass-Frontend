@@ -1,6 +1,9 @@
 name: Run Tests
 
 on:
+  push:
+
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
@@ -12,3 +15,15 @@ on:
 
   deploy:
     needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Deploy to  Vercel
+        run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --confirm
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_USER_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}  
